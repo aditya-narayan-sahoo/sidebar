@@ -9,6 +9,7 @@ function App() {
     const finalTree = insertNode(explorerData, folderId, item, isFolder);
     setExplorerData(finalTree);
   };
+
   return (
     <div>
       <Folder explorer={explorerData} handleInsertNode={handleInsertNode} />

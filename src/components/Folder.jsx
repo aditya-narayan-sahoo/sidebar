@@ -6,6 +6,7 @@ const Folder = ({ explorer, handleInsertNode }) => {
     visible: false,
     isFolder: false,
   });
+
   const handleAddFolder = (e, isFolder) => {
     e.stopPropagation();
     setExpand(true);
@@ -22,17 +23,17 @@ const Folder = ({ explorer, handleInsertNode }) => {
     }
   };
 
-  if (explorer.isFolder) {
-    return (
-      <div style={{ marginTop: 5 }}>
-        <div className="folder" onClick={() => setExpand(!expand)}>
-          <span>📁{explorer.name}</span>
-          <div>
-            <button onClick={(e) => handleAddFolder(e, true)}>Folder +</button>
-            <button onClick={(e) => handleAddFolder(e, false)}>File +</button>
-          </div>
+  return explorer.isFolder ? (
+    <div style={{ marginTop: 5 }}>
+      <div className="folder" onClick={() => setExpand(!expand)}>
+        <span>📁{explorer.name}</span>
+        <div>
+          <button onClick={(e) => handleAddFolder(e, true)}>Folder +</button>
+          <button onClick={(e) => handleAddFolder(e, false)}>File +</button>
         </div>
-        <div style={{ display: expand ? "block" : "none", paddingLeft: 25 }}>
+      </div>
+      {expand && (
+        <div style={{ paddingLeft: 25 }}>
           {showInput.visible && (
             <div className="inputContainer">
               <span>{showInput.isFolder ? "📁" : "📄"}</span>
@@ -45,21 +46,19 @@ const Folder = ({ explorer, handleInsertNode }) => {
               />
             </div>
           )}
-
-          {explorer.items.map((exp) => {
-            return (
-              <Folder
-                explorer={exp}
-                key={exp.id}
-                handleInsertNode={handleInsertNode}
-              />
-            );
-          })}
+          {explorer.items.map((exp) => (
+            <Folder
+              explorer={exp}
+              key={exp.id}
+              handleInsertNode={handleInsertNode}
+            />
+          ))}
         </div>
-      </div>
-    );
-  } else {
-    return <span className="file">📄{explorer.name}</span>;
-  }
+      )}
+    </div>
+  ) : (
+    <span className="file">📄{explorer.name}</span>
+  );
 };
+
 export default Folder;

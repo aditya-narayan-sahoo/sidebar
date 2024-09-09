@@ -15,7 +15,34 @@ const useTraverseTree = () => {
     };
   }
 
-  return { insertNode };
+  function deleteNode(tree, nodeId) {
+    if (tree.id === nodeId) {
+      return null; // Remove this node
+    }
+
+    return {
+      ...tree,
+      items: tree.items
+        .map((obj) => deleteNode(obj, nodeId))
+        .filter((item) => item !== null), // Filter out nulls
+    };
+  }
+
+  function renameNode(tree, nodeId, newName) {
+    if (tree.id === nodeId) {
+      return {
+        ...tree,
+        name: newName,
+      };
+    }
+
+    return {
+      ...tree,
+      items: tree.items.map((obj) => renameNode(obj, nodeId, newName)),
+    };
+  }
+
+  return { insertNode, deleteNode, renameNode };
 };
 
 export default useTraverseTree;
