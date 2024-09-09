@@ -14,8 +14,12 @@ const Folder = ({ explorer }) => {
       isFolder,
     });
   };
-  const handleBlur = () => {
-    setShowInput({ ...showInput, visible: false });
+
+  const onAddFolder = (e) => {
+    if (e.keyCode === 13 && e.target.value) {
+      // logic for adding file or folder
+      setShowInput({ ...showInput, visible: false });
+    }
   };
 
   if (explorer.isFolder) {
@@ -35,8 +39,11 @@ const Folder = ({ explorer }) => {
               <input
                 type="text"
                 className="inputContainer__input"
-                onBlur={handleBlur}
+                onBlur={() => {
+                  setShowInput({ ...showInput, visible: false });
+                }}
                 autoFocus
+                onKeyDown={onAddFolder}
               />
             </div>
           )}
