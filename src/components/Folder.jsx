@@ -1,10 +1,10 @@
 import { useState } from "react";
 
-const Folder = ({ explorer }) => {
+const Folder = ({ explorer, handleInsertNode }) => {
   const [expand, setExpand] = useState(false);
   const [showInput, setShowInput] = useState({
     visible: false,
-    isFolder: null,
+    isFolder: false,
   });
   const handleAddFolder = (e, isFolder) => {
     e.stopPropagation();
@@ -17,7 +17,7 @@ const Folder = ({ explorer }) => {
 
   const onAddFolder = (e) => {
     if (e.keyCode === 13 && e.target.value) {
-      // logic for adding file or folder
+      handleInsertNode(explorer.id, e.target.value, showInput.isFolder);
       setShowInput({ ...showInput, visible: false });
     }
   };
@@ -39,17 +39,21 @@ const Folder = ({ explorer }) => {
               <input
                 type="text"
                 className="inputContainer__input"
-                onBlur={() => {
-                  setShowInput({ ...showInput, visible: false });
-                }}
-                autoFocus
                 onKeyDown={onAddFolder}
+                onBlur={() => setShowInput({ ...showInput, visible: false })}
+                autoFocus
               />
             </div>
           )}
 
           {explorer.items.map((exp) => {
-            return <Folder explorer={exp} key={exp.id} />;
+            return (
+              <Folder
+                explorer={exp}
+                key={exp.id}
+                handleInsertNode={handleInsertNode}
+              />
+            );
           })}
         </div>
       </div>
